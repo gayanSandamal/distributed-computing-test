@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  rabbitMQ:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  sidecar:
+    image: nodeds:v1
+    command: node src/api.js
+    ports:
+      - "8081:5000"
+    depends_on:
+      - rabbitMQ
+    volumes:
+      - /Users/sandamal/GoTradie/distributed-computing/src   #
+  # node1:
+  #   image: nodeds:v1
+  #   command: node src/instance.js
+  #   ports:
+  #     - "8082:5000"
+  #   depends_on:
+  #     - sidecar
+  # node2:
+  #   image: nodeds:v1
+  #   command: node src/instance.js
+  #   ports:
+  #     - "8083:5000"
+  #   depends_on:
+  #     - node1
